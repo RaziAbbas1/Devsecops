@@ -82,7 +82,10 @@ pipeline {
                   sh 'docker container stop sonarqube || true'
                   sh 'docker container rm -f sonarqube || true'
                   sh 'docker run -p 9000:9000 -d --name sonarqube owasp/sonarqube'
-                  sh 'mvn sonar:sonar -Dsonar.projectKey=abbas -Dsonar.host.url=http://13.234.239.244:9000 -Dsonar.login=05f3a284f6dac43bda14023034422f540c5d10d5 || true'
+                  sh 'mvn sonar:sonar \
+                  -Dsonar.projectKey=Pipeline_Project \
+                  -Dsonar.host.url=http://192.168.74.135:9000 \
+                  -Dsonar.login=286519ea297e52a0a9fade00dc071dbb922e9e13'
            }
        }
         
@@ -110,7 +113,7 @@ pipeline {
                            def dockerrun = 'docker run -p 8080:8080 -d --name Devsecops raziabbas1996/$JOB_NAME:latest'
                            def dockerrm = 'docker container rm -f Devsecops'
                            def dockerimg = 'docker rmi raziabbas1996/$JOB_NAME'
-                           sshagent(['docker_Server']) {                     
+                           sshagent(['Deployment_Server']) {                     
                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.3.168 ${dockerrm}"
                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.3.168 ${dockerimg}"
                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.3.168 ${dockerrun}"
